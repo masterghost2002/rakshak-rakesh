@@ -1,4 +1,5 @@
 import { Box, Button, Grid, TextField, TextareaAutosize } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import { UserDataFormType, FormErrorType } from './schemas/user-data.schema';
 type Props = {
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -6,8 +7,9 @@ type Props = {
     defaultValue?: UserDataFormType;
     formErrors?: Array<FormErrorType>;
     submitButtonText: string;
+    isLoading: boolean;
 }
-const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors, submitButtonText }: Props) => {
+const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors, submitButtonText, isLoading }: Props) => {
     return (
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -96,7 +98,7 @@ const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors, submit
                     <TextareaAutosize
                         required
                         name="address"
-                        style={{ width: '100%', minHeight:'60px' }} // Adjust width as needed
+                        style={{ width: '100%', minHeight: '60px' }} // Adjust width as needed
                         id="address"
                         autoComplete="address"
                         onChange={onChange}
@@ -110,8 +112,9 @@ const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors, submit
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={isLoading}
             >
-                {submitButtonText}
+                {isLoading ? <CircularProgress size={24} sx={{ position: 'absolute', top: '50%', left: '50%', marginTop: '-12px', marginLeft: '-12px' }} /> : `${submitButtonText}`}
             </Button>
         </Box>
     )
