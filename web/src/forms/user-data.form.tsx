@@ -5,8 +5,9 @@ type Props = {
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     defaultValue?: UserDataFormType;
     formErrors?: Array<FormErrorType>;
+    submitButtonText: string;
 }
-const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors }: Props) => {
+const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors, submitButtonText }: Props) => {
     return (
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -110,15 +111,8 @@ const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors }: Prop
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
             >
-                Sign Up
+                {submitButtonText}
             </Button>
-            <Grid container justifyContent="flex-end">
-                <Grid item>
-                    <Link href="#" variant="body2">
-                        Already have an account? Sign in
-                    </Link>
-                </Grid>
-            </Grid>
         </Box>
     )
 };

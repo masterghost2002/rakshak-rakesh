@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -39,8 +41,8 @@ export default function SignUp() {
             return;
         }
         const data = parsedFormData.data;
-        if(data.password !== data.confirmPassword){
-            setFormErrors([{field: 'confirmPassword', message: 'Passwords do not match'}]);
+        if (data.password !== data.confirmPassword) {
+            setFormErrors([{ field: 'confirmPassword', message: 'Passwords do not match' }]);
             return;
         }
     };
@@ -50,13 +52,16 @@ export default function SignUp() {
             <CssBaseline />
             <Box
                 sx={{
-                    marginTop: 8,
+                    marginY: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    gap: 2
                 }}
             >
-
+                <Typography component="h4" color={'grey.500'}>
+                    Streamlining Onboarding, Driving Excellence: Your Gateway to Effortless Online Driving Assessment and Instant Licensing
+                </Typography>
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
@@ -65,7 +70,15 @@ export default function SignUp() {
                     onChange={onChange}
                     defaultValue={formData}
                     formErrors={formErrors}
+                    submitButtonText="Sign Up"
                 />
+                <Grid container justifyContent="flex-end">
+                    <Grid item>
+                        <Link to="/welcome/sign-in">
+                            Already have an account? Sign in
+                        </Link>
+                    </Grid>
+                </Grid>
             </Box>
         </Container>
     );
