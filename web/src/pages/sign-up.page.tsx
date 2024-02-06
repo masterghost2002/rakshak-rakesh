@@ -73,9 +73,8 @@ export default function SignUp() {
             setIsLoading(false);
         } catch (error: any) {
             const data = error.response.data.data;
-            if (data.type === 'validation') {
+            if (data.type === 'validation' || data.type === 'duplicacy')
                 errorSetterAndNotifier(data.result);
-            }
             else toast.error('Server error');
             setIsLoading(false);
         }
