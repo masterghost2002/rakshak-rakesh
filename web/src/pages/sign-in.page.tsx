@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,6 +13,7 @@ import { ZodIssue } from 'zod';
 import toast from 'react-hot-toast';
 import { FormErrorType } from '../forms/schemas/user-data.schema';
 import api from '../util/api-handler';
+import useUserStore from '../store/useUserStore';
 const credentialsValidator = z.object({
   email: z.string().email(),
   password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
@@ -25,6 +26,12 @@ export default function SignIn() {
   });
   const [formErrors, setFormErrors] = useState<FormErrorType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  // setUser is a function that takes a User and sets it in the store
+  const setUser = useUserStore((state) => state.setUser);
+
+  // useNavigate is a function that returns a function that takes a string and navigates to the given path
+  const navigate = useNavigate();
 
   // errorSetterAndNotifier is a function that takes an array of ZodIssue and returns an array of FormErrorType
   const errorSetterAndNotifier = (values: Array<ZodIssue>) => {
@@ -54,7 +61,9 @@ export default function SignIn() {
     setIsLoading(true);
     try {
       const res = await api.post('/api/user/sign-in', {credentials});
+      setUser(res.data.data);
       toast.success('Logged in successfully. Redirecting to dashboard...');
+      navigate('/');
     } catch (error: any) {
       const data = error.response?.data?.data;
       if (data?.type === 'validation' || data?.type === 'duplicacy' || data?.type === 'authentication' || data?.type === 'not-found')
