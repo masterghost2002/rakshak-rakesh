@@ -112,6 +112,7 @@ const UserDataForm = ({ handleSubmit, onChange, defaultValue, formErrors, submit
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                style={{ minHeight: '36px', position: 'relative' }}
                 disabled={isLoading}
             >
                 {isLoading ? <CircularProgress size={24} sx={{ position: 'absolute', top: '50%', left: '50%', marginTop: '-12px', marginLeft: '-12px' }} /> : `${submitButtonText}`}

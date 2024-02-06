@@ -72,9 +72,9 @@ export default function SignUp() {
             navigate('/welcome/sign-in');
             setIsLoading(false);
         } catch (error: any) {
-            const data = error.response.data.data;
-            if (data.type === 'validation' || data.type === 'duplicacy')
-                errorSetterAndNotifier(data.result);
+            const data = error.response?.data?.data;
+            if (data?.type === 'validation' || data?.type === 'duplicacy' || data?.type === 'authentication' || data?.type === 'not-found')
+              errorSetterAndNotifier(data.result);
             else toast.error('Server error');
             setIsLoading(false);
         }
