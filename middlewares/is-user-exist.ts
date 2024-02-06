@@ -3,7 +3,7 @@ import findUserUsingEmail from "./find-user-using-email";
 import ApiResponse from "../util/api-response";
 const isUserExist = async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const email = req.body.email;
+        const email = req.body.email || req.body.credentials.email || req.body.user.email;
         const user = await findUserUsingEmail(email);
         if(!user)
             return res.status(404).json(new ApiResponse(404, {type:'not-found', result:[{path:['email'], message:'User not found'}]}));

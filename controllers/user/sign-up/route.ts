@@ -3,7 +3,7 @@ import cryptr from "../../../util/cryptr";
 import User from '../../../schemas/user.schema';
 import ApiResponse from "../../../util/api-response";
 import UserDataValidator from "../../../schemas/validator/user-data.validator";
-const PUT = async (req: Request, res: Response) => {
+const POST = async (req: Request, res: Response) => {
     try {
         const {userData} = req.body;
         const parsedData = UserDataValidator.safeParse(userData);
@@ -19,4 +19,4 @@ const PUT = async (req: Request, res: Response) => {
         return res.status(500).json(new ApiResponse(500, {}, 'An error occurred'));
     }
 };  
-export default PUT;
+export default POST;
