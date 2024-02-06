@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const LogoLinkStyle = {
     color: 'white',
     textDecoration: 'none',
-    fontSize: '1.5em',
+    fontSize: '1em',
     fontWeight: 'bold',
     marginRight: '1em'
 }

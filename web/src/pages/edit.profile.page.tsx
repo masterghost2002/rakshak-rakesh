@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -10,8 +9,10 @@ import UserDataForm from '../forms/user-data.form';
 import api from '../util/api-handler';
 import { FormErrorType, UserDataFormType } from '../forms/schemas/user-data.schema';
 import { ZodIssue } from 'zod';
-export default function SignUp() {
+import useUserStore from '../store/useUserStore';
+export default function EditProfile() {
 
+    const user = useUserStore(state => state.user);
     // will be used for redirecting to login page after successful sign up
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,22 +33,24 @@ export default function SignUp() {
     }
     // handleSubmit is an async function that takes an event of type React.FormEvent<HTMLFormElement>
     const handleSubmit = async (data:UserDataFormType) => {
-        setIsLoading(true);
-        try {
-            await api.post('/api/user/sign-up', { userData: data });
-            navigate('/welcome/sign-in');
-            setIsLoading(false);
-        } catch (error: any) {
-            const data = error.response?.data?.data;
-            if (data?.type === 'validation' || data?.type === 'duplicacy' || data?.type === 'authentication' || data?.type === 'not-found')
-                errorSetterAndNotifier(data.result);
-            else toast.error('Server error');
-            setIsLoading(false);
-        }
+        // setIsLoading(true);
+        // try {
+        //     await api.post('/api/user/sign-up', { userData: data });
+        //     toast.success('Account created successfully.Redirecting to login page');
+        //     navigate('/welcome/sign-in');
+        //     setIsLoading(false);
+        // } catch (error: any) {
+        //     const data = error.response?.data?.data;
+        //     if (data?.type === 'validation' || data?.type === 'duplicacy' || data?.type === 'authentication' || data?.type === 'not-found')
+        //         errorSetterAndNotifier(data.result);
+        //     else toast.error('Server error');
+        //     setIsLoading(false);
+        // }
+
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container maxWidth="xs">
             <CssBaseline />
             <Box
                 sx={{
@@ -58,28 +61,27 @@ export default function SignUp() {
                     gap: 2
                 }}
             >
-                <Typography component="h4" color={'grey.500'}>
-                    Streamlining Onboarding, Driving Excellence: Your Gateway to Effortless Online Driving Assessment and Instant Licensing
-                </Typography>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    Edit Profile
                 </Typography>
                 <UserDataForm
                     handleSubmit={handleSubmit}
-                    submitButtonText="Sign Up"
+                    submitButtonText="Update"
                     isLoading={isLoading}
                     errorSetterAndNotifier={errorSetterAndNotifier}
                     setFormErrors={setFormErrors}
                     formErrors={formErrors}
-                    defaultValue={undefined}
+                    defaultValue={{
+                        firstName: user?.firstName || '',
+                        lastName: user?.lastName || '',
+                        email: user?.email || '',
+                        phoneNumber: user?.phoneNumber || '',
+                        address: user?.address || '',
+                        password:'',
+                        confirmPassword:''
+                    }}
+                    type='UPDATE'
                 />
-                <Grid container justifyContent="flex-end">
-                    <Grid item>
-                        <Link to="/welcome/sign-in">
-                            Already have an account? Sign in
-                        </Link>
-                    </Grid>
-                </Grid>
             </Box>
         </Container>
     );

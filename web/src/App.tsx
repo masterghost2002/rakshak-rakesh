@@ -4,6 +4,7 @@ import ProtectedLayout from "./layouts/protected.layout";
 import Dashboard from "./pages/dashboard.page";
 import SignIn from "./pages/sign-in.page";
 import SignUp from "./pages/sign-up.page";
+import EditProfile from "./pages/edit.profile.page";
 function App() {
   return (
     <Routes>
@@ -13,6 +14,7 @@ function App() {
       </Route>
       <Route path='/' element={<ProtectedLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="edit-profile" element={<EditProfile/>}/>
       </Route>
     </Routes>
   )
