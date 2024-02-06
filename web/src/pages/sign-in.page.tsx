@@ -1,20 +1,68 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import * as z from 'zod';
+import { ZodIssue } from 'zod';
+import toast from 'react-hot-toast';
+import { FormErrorType } from '../forms/schemas/user-data.schema';
+import api from '../util/api-handler';
+const credentialsValidator = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
+});
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: ''
+  });
+  const [formErrors, setFormErrors] = useState<FormErrorType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // errorSetterAndNotifier is a function that takes an array of ZodIssue and returns an array of FormErrorType
+  const errorSetterAndNotifier = (values: Array<ZodIssue>) => {
+    const errors = values.map((error) => {
+      toast.error(error.message);
+      return {
+        field: error.path[0],
+        message: error.message
+      }
     });
+    setFormErrors(errors);
+  }
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setCredentials((prev) => ({ ...prev, [name]: value }));
+    setFormErrors((prev) => prev.filter((error) => error.field !== name));
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const result = credentialsValidator.safeParse(credentials);
+    if (!result.success) {
+      errorSetterAndNotifier(result.error.errors);
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const res = await api.post('/api/user/sign-in', {credentials});
+      toast.success('Logged in successfully. Redirecting to dashboard...');
+    } catch (error: any) {
+      const data = error.response?.data?.data;
+      if (data?.type === 'validation' || data?.type === 'duplicacy' || data?.type === 'authentication' || data?.type === 'not-found')
+        errorSetterAndNotifier(data.result);
+      else toast.error('Internal server error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -45,6 +93,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={onChange}
+            error={formErrors.some((error) => error.field === 'email')}
           />
           <TextField
             margin="normal"
@@ -55,14 +105,18 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={onChange}
+            error={formErrors.some((error) => error.field === 'password')}
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            style={{minHeight: '36px', position: 'relative'}}
+            disabled={isLoading}
           >
-            Sign In
+            {isLoading ? <CircularProgress size={24} sx={{ position: 'absolute', top: '50%', left: '50%', marginTop: '-12px', marginLeft: '-12px' }} /> : `Sign In`}
           </Button>
           <Grid container>
             <Grid item xs>
