@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
+require('./database/db');
 import express, {Request, Response } from 'express';
 import cors from 'cors';
 const PORT = process.env.PORT || 5000;
