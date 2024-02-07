@@ -8,11 +8,11 @@ const assessmentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question'
     }],
-    submittedAt: {
-        type: Date,
-        default: Date.now
-    },
     passingQuestions: {
+        type: Number,
+        required: true
+    },
+    totalQuestions: {
         type: Number,
         required: true
     },
