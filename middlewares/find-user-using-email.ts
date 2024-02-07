@@ -4,8 +4,9 @@ const findUserUsingEmail = async (email: string) => {
         if (!email || typeof email !== 'string') throw new Error('Invalid email address');
         const _user = await User.findOne({ email });
         if (!_user) return null;
+        const userId = _user._id.toString();
         const user = {
-            _id: _user._id,
+            _id: userId,
             email: _user.email,
             firstName: _user.firstName,
             lastName: _user.lastName,

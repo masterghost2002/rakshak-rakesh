@@ -10,7 +10,7 @@ const useUserStore = create<UserStore>()(
   persist(
     (set, get) => ({
       user: undefined,
-      setUser: (data:UserType) => set({ user:data}),
+      setUser: (data:UserType | undefined) => set({ user:data}),
       getUser: () => get().user,
       getAccessToken: () => get().user?.accessToken,
     }),

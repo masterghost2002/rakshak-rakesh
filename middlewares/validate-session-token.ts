@@ -16,6 +16,7 @@ const validateToken = async (req: Request, res: Response, next: NextFunction) =>
         if (!result || typeof result === 'string')
             return res.status(401).json(new ApiResponse(401, {}, 'Unauthorized'));
         req.user = {
+            _id: result._id,
             firstName: result.firstName,
             lastName: result.lastName,
             email: result.email,

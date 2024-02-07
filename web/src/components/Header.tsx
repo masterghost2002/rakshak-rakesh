@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import  useUserStore  from '../store/useUserStore';
 const LogoLinkStyle = {
     color: 'white',
     textDecoration: 'none',
@@ -12,8 +13,10 @@ const LogoLinkStyle = {
 }
 export default function Header() {
     const navigate = useNavigate();
+    const setUser = useUserStore((state) => state.setUser);
     const handleSignOut = () => {
         sessionStorage.clear();
+        setUser(undefined);
         navigate('/welcome/sign-in');
     }
     return (

@@ -4,6 +4,7 @@ import { Typography, Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import FileHandler from "../components/FileHandler";
+import Documents from "../components/Documents";
 import { createAxiosInstance } from "../util/api-handler";
 import toast from "react-hot-toast";
 const Dashboard = () => {
@@ -74,6 +75,9 @@ const Dashboard = () => {
                 <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
                     You can upload up to 5 documents, each of size 5MB, file type can be pdf and image.
                 </Typography>
+                <Documents 
+                    accessToken = {user?.accessToken}
+                />
             </Box>
         </div>
     )
