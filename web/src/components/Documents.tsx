@@ -4,14 +4,30 @@ import { Box } from "@mui/material";
 import DocumentContainer from "./DocumentContainer";
 import { DocumentsType } from "../types/types";
 import useDocumentStore from "../store/useDocumentStore";
+import { toast } from "react-hot-toast";
 type Props = {
     accessToken: string | undefined;
 }
 const Documents = ({ accessToken }: Props) => {
     const documents = useDocumentStore((state) => state.documents);
     const setDocuments = useDocumentStore((state) => state.setDocuments);
+    const removeDocument = useDocumentStore((state) => state.removeDocument);
+    const deleteDocument = async (document: DocumentsType) => {
+        const api = createAxiosInstance(accessToken);
+        try {
+            await api.delete(`/api/documents/delete/${document.publicId}/${document._id}`);
+            removeDocument(document);
+        } catch (err: any) {
+            console.log(err);
+            throw new Error(err);
+        }
+    }
     const onDelete = async (document: DocumentsType) => {
-
+        toast.promise(deleteDocument(document), {
+            loading: 'Deleting document..',
+            success: 'Document deleted successfully',
+            error: 'Failed to delete document'
+        });
     }
     useEffect(() => {
         const fetchDocuments = async () => {

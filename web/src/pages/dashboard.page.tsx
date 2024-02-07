@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import FileHandler from "../components/FileHandler";
 import Documents from "../components/Documents";
+import useDocumentStore from "../store/useDocumentStore";
 import { createAxiosInstance } from "../util/api-handler";
 import toast from "react-hot-toast";
 const Dashboard = () => {
     const user = useUserStore((state) => state.user);
+    const addNewDocument = useDocumentStore((state) => state.addNewDocument);
     const navigate = useNavigate();
 
     const uploadFile = async (file: File, fileName: string) => {
@@ -19,7 +21,7 @@ const Dashboard = () => {
         const api = createAxiosInstance(user?.accessToken);
         try{
             const response = await api.post('/api/documents/upload', formData);
-            console.log(response);
+            addNewDocument(response.data.data);
         }catch(err:any){
             throw new Error(err);
         }

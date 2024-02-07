@@ -2,7 +2,7 @@ export type DocumentsType = {
     _id: string;
     name:string;
     secureUrl: string;
-    publicUrl: string;
+    publicId: string;
     user: string;
     format: string;
 }
