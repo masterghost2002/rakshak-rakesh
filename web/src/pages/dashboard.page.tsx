@@ -4,9 +4,32 @@ import { Typography, Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import FileHandler from "../components/FileHandler";
+import { createAxiosInstance } from "../util/api-handler";
+import toast from "react-hot-toast";
 const Dashboard = () => {
     const user = useUserStore((state) => state.user);
     const navigate = useNavigate();
+
+    const uploadFile = async (file: File, fileName: string) => {
+        if(!file) return;
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('name', fileName);
+        const api = createAxiosInstance(user?.accessToken);
+        try{
+            const response = await api.post('/api/documents/upload', formData);
+            console.log(response);
+        }catch(err:any){
+            throw new Error(err);
+        }
+    }
+    const handleFileUpload = async (file:File, fileName:string) => {
+        toast.promise(uploadFile(file, fileName), {
+            loading: 'Uploading document..',
+            success: 'Document uploaded successfully',
+            error: 'Failed to upload document'
+        });
+    }
     return (
         <div style={{ minWidth: '100vw', padding: '20px' }}>
             <Box display="flex" justifyContent="space-between">
@@ -44,7 +67,9 @@ const Dashboard = () => {
                     <Typography variant="h6" gutterBottom>
                         Documents
                     </Typography>
-                    <FileHandler />
+                    <FileHandler
+                        onFileUpload={handleFileUpload}
+                    />
                 </Box>
                 <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
                     You can upload up to 5 documents, each of size 5MB, file type can be pdf and image.

@@ -6,10 +6,10 @@ import useFileType from '../hooks/useFileType';
 import PDFCOVER from '../assets/pdfCover.png';
 const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-function FileHandler() {
+function FileHandler({onFileUpload}: {onFileUpload: (file: File, fileName:string) => void}){
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     // const [filePreview, setFilePreview] = useState<string | undefined>(undefined);
-    const [fileName, setFileName] = useState('');
+    const [fileName, setFileName] = useState<string>('');
     const [openModal, setOpenModal] = useState(false);
 
     const {fileType, fileUrl} = useFileType(selectedFile);
@@ -30,9 +30,10 @@ function FileHandler() {
     };
 
     const handleUpload = () => {
+        if(selectedFile !== null)
+            onFileUpload(selectedFile, fileName);
         setSelectedFile(null);
         setFileName('');
-        // Close modal
         setOpenModal(false);
     };
 

@@ -3,6 +3,7 @@ export type DocumentsType = {
     name:string;
     secret_url: string;
     public_id: string;
+    user: string;
 }
 export type UserType = {
     _id?: string;
