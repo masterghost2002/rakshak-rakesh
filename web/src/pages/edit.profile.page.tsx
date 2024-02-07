@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import UserDataForm from '../forms/user-data.form';
 import { FormErrorType, UserDataFormType } from '../forms/schemas/user-data.schema';
-import { ZodIssue } from 'zod';
+import { ZodIssue, set } from 'zod';
 import useUserStore from '../store/useUserStore';
 import { createAxiosInstance } from '../util/api-handler';
 export default function EditProfile() {
 
     const user = useUserStore(state => state.user);
+    const setUser = useUserStore(state => state.setUser);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     // formErrors is an array of FormErrorType
@@ -33,7 +34,9 @@ export default function EditProfile() {
         setIsLoading(true);
         const api = createAxiosInstance(user?.accessToken);
         try {
-            await api.put('/api/user/update-profile', { userData: data });
+            const res = await api.put('/api/user/update-profile', { userData: data });
+            const user = res.data.data;
+            setUser(user);
             toast.success('Profile updated successfully');
             setIsLoading(false);
         } catch (error: any) {
