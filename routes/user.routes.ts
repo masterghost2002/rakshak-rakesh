@@ -1,9 +1,12 @@
 import express from 'express';
 import CREATEUSER from '../controllers/user/sign-up/route';
 import SIGNIN from '../controllers/user/sign-in/route';
+import UPDATEPROFILE from '../controllers/user/update/route';
+import validateToken from '../middlewares/validate-session-token';
 import notUserExist from '../middlewares/not-user-exist';
 import isUserExist from '../middlewares/is-user-exist';
 const router = express.Router();
 router.post('/sign-up',notUserExist, CREATEUSER);
 router.post('/sign-in',isUserExist, SIGNIN);
+router.put('/update-profile',validateToken, UPDATEPROFILE);
 export default router;

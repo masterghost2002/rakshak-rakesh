@@ -12,5 +12,6 @@ export type UserType = {
     password: string;
     address: string;
     phoneNumber: string;
+    accessToken?: string;
     documents?: DocumentsType[];
 }
