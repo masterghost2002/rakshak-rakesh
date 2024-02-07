@@ -10,6 +10,10 @@ const documentSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  format:{
+    type: String,
+    required: true
+  },
   publicId: {
     type: String,
     required: true,

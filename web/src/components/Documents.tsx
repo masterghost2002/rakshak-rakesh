@@ -1,27 +1,42 @@
-import { useEffect, useState, memo } from "react";
+import { useEffect, memo } from "react";
 import { createAxiosInstance } from "../util/api-handler";
+import { Box } from "@mui/material";
+import DocumentContainer from "./DocumentContainer";
+import { DocumentsType } from "../types/types";
+import useDocumentStore from "../store/useDocumentStore";
 type Props = {
-    accessToken:string | undefined;
+    accessToken: string | undefined;
 }
-const Documents = ({accessToken}:Props)=>{
-    const [documents, setDocuments] = useState([]);
-    useEffect(()=>{
-        const fetchDocuments = async ()=>{
+const Documents = ({ accessToken }: Props) => {
+    const documents = useDocumentStore((state) => state.documents);
+    const setDocuments = useDocumentStore((state) => state.setDocuments);
+    const onDelete = async (document: DocumentsType) => {
+
+    }
+    useEffect(() => {
+        const fetchDocuments = async () => {
             const api = createAxiosInstance(accessToken);
-            try{
+            try {
                 const response = await api.get('/api/documents/user');
                 console.log(response);
                 setDocuments(response.data.data);
-            }catch(err:any){
+            } catch (err: any) {
                 throw new Error(err);
             }
         }
         fetchDocuments();
     }, [accessToken]);
-    return (
-        <div>
 
-        </div>
+    return (
+        <Box display="flex" flexWrap="wrap" gap={2} paddingBottom ={2}>
+            {documents.map((document) => (
+                <DocumentContainer
+                    key={document._id}
+                    document={document}
+                    onDelete={onDelete}
+                />
+            ))}
+        </Box>
     )
 };
 export default memo(Documents);

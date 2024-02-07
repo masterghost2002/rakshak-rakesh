@@ -1,9 +1,10 @@
 export type DocumentsType = {
-    _id?: string;
+    _id: string;
     name:string;
-    secret_url: string;
-    public_id: string;
+    secureUrl: string;
+    publicUrl: string;
     user: string;
+    format: string;
 }
 export type UserType = {
     _id?: string;

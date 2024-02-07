@@ -14,14 +14,14 @@ const POST = async (req: Request, res: Response) => {
         const result = await uploader.upload(req.file.path);
         if(!result)
             return res.status(500).json(new ApiResponse(500,{}, 'Error uploading file'));
-        const {secure_url, public_id} = result;
+        const {secure_url, public_id, format} = result;
         const {name} = req.body;
         
         const existingUser = await User.findOne({email: user.email});
         if(!existingUser)
         return res.status(404).json(new ApiResponse(404, { type: 'not-found', result: [{ path: ['email'], message: 'User not found' }] }));
     
-        const document = new Document({name, secureUrl:secure_url, publicId:public_id, user: existingUser._id});
+        const document = new Document({name, secureUrl:secure_url, publicId:public_id, user: existingUser._id, format});
         const mongooseSession = await mongoose.startSession();
         mongooseSession.startTransaction();
         await document.save({mongooseSession});
