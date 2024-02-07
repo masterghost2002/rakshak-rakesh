@@ -73,7 +73,7 @@ const Dashboard = () => {
                     />
                 </Box>
                 <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
-                    You can upload up to 5 documents, each of size 5MB, file type can be pdf and image.
+                    You can upload your documents, each of size 5MB, file type can be pdf and image.
                 </Typography>
                 <Documents 
                     accessToken = {user?.accessToken}
