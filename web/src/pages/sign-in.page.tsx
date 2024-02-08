@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -60,7 +60,7 @@ export default function SignIn() {
     }
     setIsLoading(true);
     try {
-      const res = await api.post('/api/user/sign-in', {credentials});
+      const res = await api.post('/api/user/sign-in', { credentials });
       setUser(res.data.data);
       toast.success('Logged in successfully. Redirecting to dashboard...');
       navigate('/');
@@ -73,6 +73,21 @@ export default function SignIn() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+          await api.get('/api/health');
+      } catch (error: any) {
+        throw new Error('Server is down');
+      }
+    };
+    toast.promise(checkServer(), {
+      loading: 'Starting server, this may take a while as we are on free plan of render',
+      success: 'Server is up and running!',
+      error: 'Server is down, please try again later.'
+    });
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -122,7 +137,7 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            style={{minHeight: '36px', position: 'relative'}}
+            style={{ minHeight: '36px', position: 'relative' }}
             disabled={isLoading}
           >
             {isLoading ? <CircularProgress size={24} sx={{ position: 'absolute', top: '50%', left: '50%', marginTop: '-12px', marginLeft: '-12px' }} /> : `Sign In`}
