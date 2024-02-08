@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Question from "./question.schema";
 const assessmentSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -6,7 +7,8 @@ const assessmentSchema = new mongoose.Schema({
     },
     questions: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question'
+        ref: 'Question',
+        required: true
     }],
     passingQuestions: {
         type: Number,
