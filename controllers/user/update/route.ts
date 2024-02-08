@@ -26,7 +26,7 @@ const POST = async (req: Request, res: Response) => {
 
         const {password,_id, ...data} = result.toObject();
         const accessToken = await generateToken({_id:_id.toString(),...data});
-        return res.status(200).json(new ApiResponse(200, {...data, accessToken}, 'User created successfully'));
+        return res.status(200).json(new ApiResponse(200, {...data,_id:_id.toString(), accessToken}, 'User created successfully'));
     } catch (error: any) {
 
         if(error.code === 11000)
