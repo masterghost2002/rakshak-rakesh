@@ -34,6 +34,9 @@ const assessmentResultSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isTerminated: {
+    type: Boolean,
+  },
   correct: {
     type: Number,
     required: true

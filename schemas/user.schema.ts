@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    results:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AssessmentResult'
+    }],
     documents: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Document'

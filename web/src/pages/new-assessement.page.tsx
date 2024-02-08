@@ -26,18 +26,18 @@ const NewAssessmentPage = () => {
 
     const user = useUserStore(state => state.user);
     const accessToken = user?.accessToken;
-    
+
     //custom hooks
     const [seconds, resetTimer] = useTimer({ threshold: 30 });
     const isTabActive = useTabSwitchDetection();
     const isRightClicked = useRightClickDetectionAndDisable();
     const navigate = useNavigate();
 
-    const handleOptionChange = (questionId: string, selectedOption: number) => {   
+    const handleOptionChange = (questionId: string, selectedOption: number) => {
         const index = selectedOptions.findIndex((option) => option.questionId === questionId);
-        if (index === -1) {
+        if (index === -1)
             setSelectedOptions([...selectedOptions, { questionId, selectedOption }]);
-        } else {
+        else {
             const updatedOptions = selectedOptions.map((option) => {
                 if (option.questionId === questionId) {
                     return { ...option, selectedOption };
@@ -46,18 +46,57 @@ const NewAssessmentPage = () => {
             });
             setSelectedOptions(updatedOptions);
         }
-    };    
+    };
 
+    //handle terminate will be called when user is found to be cheating
+    const handleTerminate = async () => {
+        const api = createAxiosInstance(accessToken);
+        try {
+            const response = await api.post('/api/assessement/generate-result', { selectedOptions, assessment, remarks: 'Assessment Terminated user found to be cheating', isTerminated: true });
+            navigate('/result', { state: response.data.data })
+        } catch (error) {
+            toast.error('Failed to terminate Assessment');
+        }
+    };
+
+    // handle submit will be called when user completes the assessment, or clicks on exit
+    const handleSubmit = async (remarks = 'Completed') => {
+        const api = createAxiosInstance(accessToken);
+        try {
+            const response = await api.post('/api/assessement/generate-result', { selectedOptions, assessment, remarks, isTerminated: false });
+            navigate('/result', { state: response.data.data });
+        } catch (error) {
+            console.log(error);
+            throw new Error('Failed to submit Assessment');
+        }
+    };
+
+    //handle next will be called when user clicks on next button
     const handleNext = () => {
         resetTimer();
         if (!assessment) return;
-        if (currentQuestion + 1 < assessment?.totalQuestions)
+        if (currentQuestion + 1 < assessment?.totalQuestions) {
+            const questionId = questions[currentQuestion]?._id;
+            const index = selectedOptions.findIndex((option) => option.questionId === questionId);
+            if (index === -1)
+                setSelectedOptions(prev=>[...prev, { questionId, selectedOption:-1 }]);
             setCurrentQuestion(currentQuestion + 1);
-        else alert('Assessment Completed');
+
+        }
+        else toast.promise(handleSubmit(), {
+            loading: 'Submitting...',
+            success: 'Assessment Submitted!',
+            error: 'Failed to submit Assessment'
+        });
+    }
+    const handleExit = () => {
+        toast.promise(handleSubmit('User exit in between'), {
+            loading: 'Submitting...',
+            success: 'Assessment Submitted!',
+            error: 'Failed to submit Assessment'
+        });
     }
 
-    const handleTerminate = () => {};
-    const handleSubmit = () => {};
 
     //handle timer
     useEffect(() => {
@@ -68,6 +107,7 @@ const NewAssessmentPage = () => {
     // if tab is inactive or right clicked, terminate the assessment
     useEffect(() => {
         if (!isTabActive || isRightClicked) {
+            handleTerminate();
             navigate('/guidelines');
         }
     }, [isTabActive, isRightClicked, navigate]);
@@ -83,6 +123,7 @@ const NewAssessmentPage = () => {
                 setQuestions(questions);
             } catch (error) {
                 console.log(error);
+                throw new Error('Failed to fetch Assessment');
             }
         }
         toast.promise(fetchAssessment(), {
@@ -109,7 +150,7 @@ const NewAssessmentPage = () => {
                         {currentQuestion + 1}/{assessment?.totalQuestions}
                     </Typography>
                     <Box flexGrow={1} />
-                    <Button color="inherit" onClick={() => { }}>Exit</Button>
+                    <Button color="inherit" onClick={handleExit}>Exit</Button>
                 </Toolbar>
             </AppBar>
             <main
