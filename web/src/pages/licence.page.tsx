@@ -89,7 +89,7 @@ const LicencePage = () => {
                 Previous Assessment Results
 
             </Typography>
-            {results.map((item, index) => (
+            {results.map((item) => (
                 <Box
                     key={item._id}
                     display="flex"
