@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import UserDataForm from '../forms/user-data.form';
 import { FormErrorType, UserDataFormType } from '../forms/schemas/user-data.schema';
-import { ZodIssue, set } from 'zod';
+import { ZodIssue } from 'zod';
 import useUserStore from '../store/useUserStore';
 import { createAxiosInstance } from '../util/api-handler';
 export default function EditProfile() {
