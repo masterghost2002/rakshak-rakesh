@@ -12,7 +12,6 @@ const POST = async (req: Request, res: Response) => {
         if (!isPasswordMatched)
             return res.status(400).json(new ApiResponse(400, { type: 'validation', result: [{ path: ['password'], message: 'Password is incorrect' }] }));
         const accessToken = await generateToken(user);
-        req.session.accessToken = accessToken;
         return res.status(200).json(new ApiResponse(200, {...user, accessToken}, 'User signed in successfully'));
     } catch (error) {
         console.log(error);
