@@ -4,14 +4,16 @@ import { UserType } from '../types/types';
 type UserStore ={
     user: UserType | undefined;
     setUser: (data: UserType) => void;
+    reset: () => void;
     getAccessToken: () => string | undefined;
 }
 const useUserStore = create<UserStore>()(
   persist(
     (set, get) => ({
       user: undefined,
-      setUser: (data:UserType | undefined) => set({ user:data}),
+      setUser: (data:UserType) => set({ user:data}),
       getUser: () => get().user,
+      reset: () => set({ user: undefined }),
       getAccessToken: () => get().user?.accessToken,
     }),
     {

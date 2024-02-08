@@ -8,6 +8,7 @@ import EditProfile from "./pages/edit.profile.page";
 import GuidelinePage from "./pages/guidlines.page";
 import NewAssessmentsPage from "./pages/new-assessement.page";
 import ResultPage from "./pages/result.page";
+import LicencePage from "./pages/licence.page";
 function App() {
   return (
     <Routes>
@@ -21,6 +22,7 @@ function App() {
         <Route path="guidelines" element={<GuidelinePage/>}/>
         <Route path="new-assessement" element={<NewAssessmentsPage/>}/>
         <Route path="result" element={<ResultPage/>}/>
+        <Route path="licence" element={<LicencePage/>}/>
       </Route>
     </Routes>
   )

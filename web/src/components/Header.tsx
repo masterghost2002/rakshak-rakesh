@@ -13,10 +13,10 @@ const LogoLinkStyle = {
 }
 export default function Header() {
     const navigate = useNavigate();
-    const setUser = useUserStore((state) => state.setUser);
+    const reset = useUserStore((state) => state.reset);
     const handleSignOut = () => {
         sessionStorage.clear();
-        setUser(undefined);
+        reset();
         navigate('/welcome/sign-in');
     }
     return (
@@ -26,8 +26,8 @@ export default function Header() {
                     <Link to='/' style={LogoLinkStyle}>
                         Rakshak
                     </Link>
-                    <Link to='/assessements' style={LogoLinkStyle}>
-                        Assessements
+                    <Link to='/licence' style={LogoLinkStyle}>
+                        Licence
                     </Link>
                     <Button onClick={handleSignOut} sx={{ marginLeft: 'auto' }} color="inherit">Sign Out</Button>
                 </Toolbar>
