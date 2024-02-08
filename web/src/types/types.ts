@@ -17,3 +17,21 @@ export type UserType = {
     accessToken?: string;
     documents?: DocumentsType[];
 }
+export type QuestionType = {
+    _id: string;
+    question: string;
+    options: string[];
+    category: string;
+};
+export type AssessmentType = {
+    _id: string;
+    title: string;
+    questions: QuestionType[];
+    passingQuestions: number;
+    totalQuestions: number;
+    createdAt: Date;
+}
+export type SelectedOptionsType = {
+    questionId: string;
+    selectedOption: number;
+}
