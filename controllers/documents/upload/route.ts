@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import fs from "fs";
 import uploader from "../../../util/cloudinary";
 import ApiResponse from "../../../util/api-response";
 import mongoose from "mongoose";
@@ -28,9 +29,12 @@ const POST = async (req: Request, res: Response) => {
         existingUser.documents.push(document);
         await existingUser.save();
         await mongooseSession.commitTransaction();
+        fs.unlinkSync(req.file.path);
         return res.status(200).json(new ApiResponse(200, document, 'Document uploaded successfully'));
     } catch (error) {
         console.log('error', error);
+        if(req.file && req.file.path)
+            fs.unlinkSync(req.file.path);
         return res.status(500).json(new ApiResponse(500,{}, 'Error uploading file'));
     }
 };
