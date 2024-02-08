@@ -23,11 +23,15 @@ const assessmentResultSchema = new mongoose.Schema({
   },
   overall: {
     type: String,
-    enum: ['PASS', 'FAIL'],
+    enum: ['PASS', 'FAIL', 'TERMINATED'],
     required: true
   },
   totalQuestions: {
     type: Number,
+    required: true
+  },
+  remarks: {
+    type: String,
     required: true
   },
   correct: {
