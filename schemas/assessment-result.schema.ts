@@ -47,7 +47,6 @@ const assessmentResultSchema = new mongoose.Schema({
   },
   validTill: {
     type: Date,
-    required: true
   },
   categoryWisePerformance: [categoryPerformanceSchema],
 });

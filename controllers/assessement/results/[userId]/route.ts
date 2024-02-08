@@ -11,7 +11,7 @@ const GET = async (req: Request, res: Response) => {
         if(userId !== user._id.toString()) return res.status(403).json(new ApiResponse(403, { type: 'forbidden', result: [{ path: ['email'], message: 'Forbidden' }] }));
 
         // Fetch the results
-        const results = await AssessmentResult.find({ userId: userId });
+        const results = await AssessmentResult.find({ userId: userId }).sort({ createdAt: -1 });
 
         // If no results are found
         if(!results) return res.status(404).json(new ApiResponse(404, { type: 'not-found', result: [{ path: ['email'], message: 'Result not found' }] }));
