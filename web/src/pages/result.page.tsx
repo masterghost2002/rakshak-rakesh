@@ -60,11 +60,10 @@ const ResultPage = () => {
         color="primary"
         style={{ marginTop: '16px' }}
         onClick={() => {
-          // Handle PDF download logic here
-          alert('Downloading PDF...');
+          navigate('/licence-pdf', { state: result });
         }}
       >
-        Download License as PDF
+        Download Licence as PDF
       </Button>}
     </Box>
   );
