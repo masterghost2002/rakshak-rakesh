@@ -5,7 +5,6 @@ import AssessmentResult from "../../../schemas/assessment-result.schema";
 import { Request, Response } from "express";
 const POST = async (req: Request, res: Response) => {
     const user = req.user;
-    console.log(user);
     if(!user)  return res.status(404).json(new ApiResponse(404, { type: 'not-found', result: [{ path: ['email'], message: 'User not found' }] }));
     try{
         const {selectedOptions, assessment, isTerminated} = req.body;

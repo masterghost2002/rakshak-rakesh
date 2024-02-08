@@ -4,7 +4,6 @@ const useRightClickDetectionAndDisable = () => {
     useEffect(() => {
         const handleContextMenu = (event: MouseEvent) => {
             event.preventDefault();
-            alert('Right Click is disabled');
             setIsClicked(true);
         };
         document.addEventListener('contextmenu', handleContextMenu);
