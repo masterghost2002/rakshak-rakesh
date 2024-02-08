@@ -36,3 +36,23 @@ export type SelectedOptionsType = {
     questionId: string;
     selectedOption: number;
 }
+export type CategoryWisePerformanceType = {
+    category: string;
+    totalQuestions: number;
+    correct: number;
+    _id: string;
+}
+export type ResultType = {
+    _id:string;
+    overall: "PASS" | "FAIL" | "TERMINATED";
+    isTerminated: boolean;
+    category: "Road" | "Vehicle" | "Medical";
+    userId: string;
+    __v: number;
+    createdAt: Date;
+    validTill: Date;
+    remarks: string;
+    totalQuestions: number;
+    correct: number;
+    categoryWisePerformance: CategoryWisePerformanceType[];
+}
