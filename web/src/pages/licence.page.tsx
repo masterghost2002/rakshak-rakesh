@@ -70,7 +70,9 @@ const LicencePage = () => {
                         <Typography fontSize='16px'>
                             Download you latest licence
                         </Typography>
-                        <Button variant="contained">
+                        <Button variant="contained"
+                            onClick={() => navigate('/licence-pdf', {state:latestLicence})}
+                        >
                             Download Licence
                         </Button>
                     </Box>

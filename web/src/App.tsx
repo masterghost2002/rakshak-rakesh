@@ -9,6 +9,7 @@ import GuidelinePage from "./pages/guidlines.page";
 import NewAssessmentsPage from "./pages/new-assessement.page";
 import ResultPage from "./pages/result.page";
 import LicencePage from "./pages/licence.page";
+import LicencePdfPage from "./pages/licence-pdf.page";
 function App() {
   return (
     <Routes>
@@ -23,6 +24,7 @@ function App() {
         <Route path="new-assessement" element={<NewAssessmentsPage/>}/>
         <Route path="result" element={<ResultPage/>}/>
         <Route path="licence" element={<LicencePage/>}/>
+        <Route path="licence-pdf" element={<LicencePdfPage/>}/>
       </Route>
     </Routes>
   )
