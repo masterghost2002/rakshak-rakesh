@@ -16,6 +16,7 @@ export type UserType = {
     phoneNumber: string;
     accessToken?: string;
     documents?: DocumentsType[];
+    results?: string[];
 }
 export type QuestionType = {
     _id: string;

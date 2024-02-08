@@ -8,6 +8,7 @@ export type UserType = {
     address: string;
     phoneNumber:string;
     documents?:mongoose.Types.ObjectId[];
+    results?:mongoose.Types.ObjectId[];
     createdAt?: Date;
     updatedAt?: Date;
 }
