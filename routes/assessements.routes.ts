@@ -1,8 +1,10 @@
 import express from 'express';
 import GETASSESSEMENT from '../controllers/assessement/route';
 import GENERATERESULT from '../controllers/assessement/generate-result/route';
+import GETRESULTS from '../controllers/assessement/results/[userId]/route';
 import validateToken from '../middlewares/validate-session-token';
 const router = express.Router();
 router.get('/new-assessment',validateToken, GETASSESSEMENT);
 router.post('/generate-result',validateToken, GENERATERESULT);
+router.get('/results/:userId',validateToken, GETRESULTS);
 export default router;
