@@ -40,7 +40,7 @@ const ResultPage = () => {
         Total Questions: {result.totalQuestions}
       </Typography>
       <Typography variant="body1">
-        Correct Questions: {20}
+        Correct Questions: {result.correct}
       </Typography>
       <Typography variant="h6" mt={3}>
         Category Performance:
@@ -55,7 +55,7 @@ const ResultPage = () => {
       <Typography variant="body1">
         Remarks: {result.remarks}
       </Typography>
-      {result.overal === 'PASS' && <Button
+      {result.overall === 'PASS' && <Button
         variant="contained"
         color="primary"
         style={{ marginTop: '16px' }}
@@ -64,7 +64,7 @@ const ResultPage = () => {
           alert('Downloading PDF...');
         }}
       >
-        Download as PDF
+        Download License as PDF
       </Button>}
     </Box>
   );
